@@ -1,14 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from 'react';
+import { SimpleTopAppBar, TopAppBarFixedAdjust } from "@rmwc/top-app-bar"
+import { Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle, DrawerContent } from "@rmwc/drawer"
+import { List, ListItem, CollapsibleList, SimpleListItem, ListDivider } from "@rmwc/list"
+import { Button } from "@rmwc/button"
 
 import Spinner from "./components/Spinner"
 
+import "./App.css"
+
 function App() {
+
+  const [open, setOpen] = React.useState(false)
+
   return (
-    <div className="App">
-      <Spinner />
-    </div>
+    <Fragment>
+      <SimpleTopAppBar
+        fixed
+        title="Classroom Spinner"
+        navigationIcon={{ onClick: () => setOpen(!open) }}
+        actionItems={[
+          {
+            icon: 'file_download',
+            onClick: () => console.log('Do Something')
+          },
+          { icon: 'print', onClick: () => console.log('Do Something') },
+          { icon: 'bookmark', onClick: () => console.log('Do Something') }
+        ]}
+      />
+    <Drawer modal open={open} onClose={() => setOpen(false)}>
+        <DrawerHeader>
+          <DrawerTitle>Classroom Spinner</DrawerTitle>
+          <DrawerSubtitle>Subtitle</DrawerSubtitle>
+        </DrawerHeader>
+        <DrawerContent>
+          <List>
+            <CollapsibleList
+              handle={
+                <SimpleListItem
+                  text="Mr. Thomason's Class"
+                  metaIcon="chevron_right"
+                />
+              }
+              onOpen={() => console.log('open')}
+              onClose={() => console.log('close')}
+            >
+              <SimpleListItem text="Spinner 1" />
+              <SimpleListItem text="Spinner 2" />
+              <SimpleListItem text="Spinner 3" />
+              <ListItem><Button label="Edit classroom" outlined /></ListItem>
+            </CollapsibleList>
+            <ListDivider />
+            <ListItem className='centered-button-list-item'><Button label="Add classroom" raised /></ListItem>
+            <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised /></ListItem>
+          </List>
+        </DrawerContent>
+      </Drawer>
+      <TopAppBarFixedAdjust />
+      <div className="App">
+        <Spinner scheme="Set1" canSpin={true} />
+      </div>
+    </Fragment>
   );
 }
 

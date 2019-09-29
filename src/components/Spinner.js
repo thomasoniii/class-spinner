@@ -1,35 +1,24 @@
-import React, {Fragment, useState} from "react"
+import React, {useState} from "react"
 import colorbrewer from "colorbrewer"
+import {Fab} from "@rmwc/fab"
 
 import "styles/spinner.css"
 
-const shuffle = (array) => {
+const availableSchemes = Object.entries(colorbrewer).reduce( (available, [key, set]) => {
+  if (key !== "schemeGroups") {
+    available[key] = set[Object.keys(set).sort().pop()]
+  }
+  return available
+}, {} )
 
-	var currentIndex = array.length;
-	var temporaryValue, randomIndex;
-
-	// While there remain elements to shuffle...
-	while (0 !== currentIndex) {
-		// Pick a remaining element...
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-
-		// And swap it with the current element.
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
-	}
-
-	return array;
-
-}
+console.log("AVAILABLE : ", availableSchemes, colorbrewer)
 
 const pickWinner = ( kids ) => {
 
   const lastWinner = kids.find(kid => kid.winner)
   if (lastWinner) {
     lastWinner.winner = false;
-    lastWinner.color = "black";
+    lastWinner.canWin = false;
   }
 
   const winnableKids = kids.filter( kid => kid.canWin )
@@ -38,7 +27,6 @@ const pickWinner = ( kids ) => {
   const winner = winnableKids[winnerIndex]
   const kidIndex = kids.findIndex(kid => kid === winner)
   winner.winner = true;
-  winner.canWin = false;
 
   if (kidIndex > 0) {
     const movableKids = kids.splice(0, kidIndex)
@@ -46,8 +34,6 @@ const pickWinner = ( kids ) => {
   }
   return kids
 }
-
-const colors = colorbrewer.Set1[9]
 
 const defaultKids = [
   "Jim Thomason",
@@ -73,7 +59,11 @@ const defaultKids = [
   "Worf",
   "Crusher",
   "O'Brien",
-  "Wesley"
+  "Wesley",
+  "Janeway",
+  "Tuvok",
+  "Paris",
+  "James Augustus Thomason III"
 ]
 
 const NdefaultKids = [
@@ -85,9 +75,9 @@ const NdefaultKids = [
   "Tucker Thomason",
 ]
 
-const kidsWithColors = defaultKids.map( (kid, i) => ( { name : kid, color : colors[i % colors.length], canWin : true } ) )
+const kidsWithColors = defaultKids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) )
 
-console.log("COLORS : ", colors)
+console.log("COLORS : ", colorbrewer)
 
 const heightForAngle = (angle, outerRadius) => {
   const radians = angle / 360 * 2 * Math.PI
@@ -100,18 +90,20 @@ export default props => {
   const [spin, setSpin] = useState(false);
   const [kids, setKids] = useState(kidsWithColors);
 
-  const outerRadius = 250
+  const outerRadius = 400
   const innerRadius = 20
 
-  const textOffset = 200
+  const textOffset = outerRadius - innerRadius - 10
   const margin = 20
+
+  const colors = availableSchemes[props.scheme]
 
   // take the number of kids and divide by 360. That's what'll cover a kid.
   // half of that will be the +/0 angle
   const wedgeAngle = 360 / kids.length / 2
 
   return (
-    <Fragment>
+    <div className="spinner-container">
       <svg style={{width : `${outerRadius * 2 + margin}px`, height : `${outerRadius * 2 + margin}px`}}>
         <g className={`spinner ${ spin ? "spinning" : ""}`}>
           <clipPath id = "circle">
@@ -124,11 +116,11 @@ export default props => {
               <g clipPath="url(#circle)" key={kid.name}>
                 <g transform={`translate(${outerRadius + innerRadius + textOffset + margin / 2}, ${outerRadius + margin / 2}) rotate(${angle}, -${innerRadius + textOffset}, 0)`}>
                   <path className="wedge" d={`M${-innerRadius - textOffset},0 l${outerRadius}, ${heightForAngle(wedgeAngle, outerRadius)} l0, ${-2 * heightForAngle(wedgeAngle, outerRadius)} Z`}
-                    fill={kid.color}
-                    stroke="black"
-                    strokeWidth="2" />
+                    fill={ kid.canWin ? colors[kid.color % colors.length] : "#444444"}
+                    stroke={ kid.winner ? "gold" : "black"}
+                    strokeWidth={ kid.winner ? "10" : "2"} />
 
-                  <text textAnchor="end" alignmentBaseline="middle" fill={"black"}>{kid.name}</text>
+                  <text textAnchor="end" alignmentBaseline="middle" fill={kid.canWin ? "black" : "#666666"}>{kid.name}</text>
                 </g>
               </g>
             )
@@ -138,14 +130,19 @@ export default props => {
         </g>
         <path d={`M${outerRadius * 2 + margin},${outerRadius + margin / 2} l0,-10 l-20,10 l20,10 Z`} fill="white" stroke="black" />
       </svg>
-      <button onClick={() => {
-        setSpin(true);
-        //const newKids = [...kids]
-        //const lastKid = newKids.shift();
-        //newKids.push(lastKid)
-        setTimeout( () => setKids(pickWinner([...kids])), 2000)
-        setTimeout( () => setSpin(false), 4000)
-      }} >Spin it</button>
-    </Fragment>
+      { props.canSpin && <div>
+        <Fab
+          label="Spin the wheel"
+          theme={['primaryBg']}
+          onClick={() => {
+            setSpin(true);
+            //const newKids = [...kids]
+            //const lastKid = newKids.shift();
+            //newKids.push(lastKid)
+            setTimeout( () => setKids(pickWinner([...kids])), 2000)
+            setTimeout( () => setSpin(false), 4000)
+          }} />
+      </div> }
+    </div>
   )
 }

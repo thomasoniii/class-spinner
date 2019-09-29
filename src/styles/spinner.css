@@ -1,5 +1,18 @@
 text {
-  font-size : 100%;
+  font-size : 130%;
+  //fill : black;
+  //stroke : white;
+  font-weight : bold;
+}
+
+.spinner-container {
+  text-align : center;
+}
+
+.spin-button {
+  cursor : pointer;
+  font-size : 300%;
+  text-align : center;
 }
 
 @keyframes spin {
