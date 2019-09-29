@@ -1,0 +1,18 @@
+text {
+  font-size : 100%;
+}
+
+@keyframes spin {
+  from {
+    transform : rotate(0deg);
+    transform-origin : center center;
+  }
+  to {
+    transform : rotate(1800deg);
+    transform-origin : center center;
+  }
+}
+
+.spinning {
+  animation : spin 4s ease-in-out 1;
+}
