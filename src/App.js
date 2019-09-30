@@ -3,14 +3,20 @@ import { SimpleTopAppBar, TopAppBarFixedAdjust } from "@rmwc/top-app-bar"
 import { Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle, DrawerContent } from "@rmwc/drawer"
 import { List, ListItem, CollapsibleList, SimpleListItem, ListDivider } from "@rmwc/list"
 import { Button } from "@rmwc/button"
+import { Route, Switch } from "react-router-dom"
+import { useHistory } from "react-router"
 
 import Spinner from "./components/Spinner"
+import AddClassroom from "./components/add-classroom"
+import EditSpinners from "./components/edit-spinners"
 
 import "./App.css"
 
-function App() {
+const App = props => {
 
   const [open, setOpen] = React.useState(false)
+
+  const history = useHistory()
 
   return (
     <Fragment>
@@ -18,14 +24,6 @@ function App() {
         fixed
         title="Classroom Spinner"
         navigationIcon={{ onClick: () => setOpen(!open) }}
-        actionItems={[
-          {
-            icon: 'file_download',
-            onClick: () => console.log('Do Something')
-          },
-          { icon: 'print', onClick: () => console.log('Do Something') },
-          { icon: 'bookmark', onClick: () => console.log('Do Something') }
-        ]}
       />
     <Drawer modal open={open} onClose={() => setOpen(false)}>
         <DrawerHeader>
@@ -50,15 +48,26 @@ function App() {
               <ListItem><Button label="Edit classroom" outlined /></ListItem>
             </CollapsibleList>
             <ListDivider />
-            <ListItem className='centered-button-list-item'><Button label="Add classroom" raised /></ListItem>
-            <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised /></ListItem>
+            <ListItem className='centered-button-list-item'><Button label="Add classroom" raised onClick={ () => { setOpen(false); history.push('/add-classroom') } }/></ListItem>
+            <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised onClick={ () => { setOpen(false); history.push('/edit-spinners') } }/></ListItem>
           </List>
         </DrawerContent>
       </Drawer>
       <TopAppBarFixedAdjust />
-      <div className="App">
-        <Spinner scheme="Set1" canSpin={true} />
-      </div>
+      <Switch>
+        <Route exact path = "/">
+          <div className="welcome-container">Welcome to the classroom spinner!</div>
+        </Route>
+        <Route path = "/spinner">
+          <Spinner scheme="Set1" canSpin={true} />
+        </Route>
+        <Route path = "/edit-spinners">
+          <EditSpinners />
+        </Route>
+        <Route path = "/add-classroom">
+          <AddClassroom />
+        </Route>
+      </Switch>
     </Fragment>
   );
 }

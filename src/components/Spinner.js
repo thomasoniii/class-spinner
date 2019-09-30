@@ -11,7 +11,7 @@ const availableSchemes = Object.entries(colorbrewer).reduce( (available, [key, s
   return available
 }, {} )
 
-console.log("AVAILABLE : ", availableSchemes, colorbrewer)
+console.log("AVAILABLE : ", colorbrewer)
 
 const pickWinner = ( kids ) => {
 
@@ -66,15 +66,6 @@ const defaultKids = [
   "James Augustus Thomason III"
 ]
 
-const NdefaultKids = [
-  "Jim Thomason",
-  "Carolyn Thomason",
-  "Alex Thomason",
-  "Anakin Berry",
-  "Sally Thomason",
-  "Tucker Thomason",
-]
-
 const kidsWithColors = defaultKids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) )
 
 console.log("COLORS : ", colorbrewer)
@@ -88,13 +79,12 @@ const heightForAngle = (angle, outerRadius) => {
 export default props => {
 
   const [spin, setSpin] = useState(false);
-  const [kids, setKids] = useState(kidsWithColors);
+  //const [kids, setKids] = useState(kidsWithColors);
+  const [kids, setKids] = useState(props.kids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) ));
 
-  const outerRadius = 400
-  const innerRadius = 20
+  const { outerRadius = 400, innerRadius = 20, margin = 20 } = props
 
   const textOffset = outerRadius - innerRadius - 10
-  const margin = 20
 
   const colors = availableSchemes[props.scheme]
 
@@ -113,7 +103,7 @@ export default props => {
           { kids.map((kid, i, kids) => {
             const angle = i / kids.length * 360
             return (
-              <g clipPath="url(#circle)" key={kid.name}>
+              <g clipPath="url(#circle)" key={kid.name + i}>
                 <g transform={`translate(${outerRadius + innerRadius + textOffset + margin / 2}, ${outerRadius + margin / 2}) rotate(${angle}, -${innerRadius + textOffset}, 0)`}>
                   <path className="wedge" d={`M${-innerRadius - textOffset},0 l${outerRadius}, ${heightForAngle(wedgeAngle, outerRadius)} l0, ${-2 * heightForAngle(wedgeAngle, outerRadius)} Z`}
                     fill={ kid.canWin ? colors[kid.color % colors.length] : "#444444"}
@@ -128,7 +118,7 @@ export default props => {
           <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={innerRadius} fill = 'black'/>
           <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} stroke = 'black' fill="none" strokeWidth="4"/>
         </g>
-        <path d={`M${outerRadius * 2 + margin},${outerRadius + margin / 2} l0,-10 l-20,10 l20,10 Z`} fill="white" stroke="black" />
+        { props.canSpin && <path d={`M${outerRadius * 2 + margin},${outerRadius + margin / 2} l0,-10 l-20,10 l20,10 Z`} fill="white" stroke="black" /> }
       </svg>
       { props.canSpin && <div>
         <Fab

@@ -2,3 +2,17 @@
   display : flex;
   justify-content : center;
 }
+
+.welcome-container {
+  width : 100vw;
+  height : 94vh;
+  background-color : green;
+  display : flex;
+  justify-content : center;
+  align-items : center;
+  font-size : 450%
+}
+
+.selector-table td {
+  cursor : pointer;
+}
