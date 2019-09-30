@@ -15,7 +15,7 @@ const EditSpinner = props => {
     <div>
       <Spinner
         scheme={spinner.scheme}
-        canSpin={false}
+        canSpin={true}
         outerRadius={100}
         kids={["","","","","","","","","","","","","","","","","",""]}
       />

@@ -9,6 +9,12 @@ text {
   text-align : center;
 }
 
+.spinner-pointer {
+  fill : gold;
+  stroke : #333333;
+  stroke-width : 4;
+}
+
 .spin-button {
   cursor : pointer;
   font-size : 300%;

@@ -87,6 +87,7 @@ console.log("SPINNER : ", props)
   const textOffset = outerRadius - innerRadius - 10
 
   const colors = availableSchemes[props.scheme]
+  const pointerPadding = 20
 
   // take the number of kids and divide by 360. That's what'll cover a kid.
   // half of that will be the +/0 angle
@@ -94,7 +95,7 @@ console.log("SPINNER : ", props)
 console.log("KIDS : ",kids)
   return (
     <div className="spinner-container">
-      <svg style={{width : `${outerRadius * 2 + margin}px`, height : `${outerRadius * 2 + margin}px`}}>
+      <svg style={{width : `${outerRadius * 2 + margin + pointerPadding}px`, height : `${outerRadius * 2 + margin}px`}}>
         <g className={`spinner ${ spin ? "spinning" : ""}`}>
           <clipPath id = "circle">
             <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} fill = 'blue'/>
@@ -118,7 +119,7 @@ console.log("KIDS : ",kids)
           <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={innerRadius} fill = 'black'/>
           <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} stroke = 'black' fill="none" strokeWidth="4"/>
         </g>
-        { props.canSpin && <path d={`M${outerRadius * 2 + margin},${outerRadius + margin / 2} l0,-10 l-20,10 l20,10 Z`} fill="white" stroke="black" /> }
+        { props.canSpin && <path d={`M${outerRadius * 2 + margin + pointerPadding - 2},${outerRadius + margin / 2} l0,-10 l-40,10 l40,10 Z`} className="spinner-pointer" /> }
       </svg>
       { props.canSpin && <div>
         <Fab
