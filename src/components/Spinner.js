@@ -77,7 +77,7 @@ const heightForAngle = (angle, outerRadius) => {
 }
 
 export default props => {
-
+console.log("SPINNER : ", props)
   const [spin, setSpin] = useState(false);
   //const [kids, setKids] = useState(kidsWithColors);
   const [kids, setKids] = useState(props.kids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) ));
@@ -91,7 +91,7 @@ export default props => {
   // take the number of kids and divide by 360. That's what'll cover a kid.
   // half of that will be the +/0 angle
   const wedgeAngle = 360 / kids.length / 2
-
+console.log("KIDS : ",kids)
   return (
     <div className="spinner-container">
       <svg style={{width : `${outerRadius * 2 + margin}px`, height : `${outerRadius * 2 + margin}px`}}>

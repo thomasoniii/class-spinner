@@ -1,8 +1,8 @@
 import {
-  ADD_SPINNER,
-  SELECT_SPINNER,
-  RENAME_SPINNER,
-  SET_SCHEME
+  ADD_CLASSROOM,
+  SELECT_CLASSROOM,
+  RENAME_CLASSROOM,
+  SET_ROSTER
 } from "actions"
 
 const INITIAL = {}
@@ -10,48 +10,48 @@ const INITIAL = {}
 export default (state = INITIAL, action) => {
   console.log("RED HERE : ", action)
   switch(action.type) {
-    case ADD_SPINNER : {
+    case ADD_CLASSROOM : {
       const { id } = action.payload
       return {
         ...state,
         [id] : {
           id,
-          name : "New Spinner",
+          name : "New Classroom",
           scheme : "Set1",
           selected : true
         }
       }
     }
-    case SELECT_SPINNER : {
+    case SELECT_CLASSROOM : {
       const { id : selectedID } = action.payload
 
-      return Object.entries(state).reduce( (newState, [id, spinner]) => {
-        console.log("MAPPING : ", id, spinner, selectedID)
-        if (selectedID === id && spinner.selected === false) {
+      return Object.entries(state).reduce( (newState, [id, classroom]) => {
+        console.log("MAPPING : ", id, classroom, selectedID)
+        if (selectedID === id && classroom.selected === false) {
           newState[id] = { ...state[id], selected : true }
         }
-        else if (selectedID !== id  && spinner.selected === true) {
+        else if (selectedID !== id  && classroom.selected === true) {
           newState[id] = { ...state[id], selected : false }
         }
         else {
-          newState[id] = spinner
+          newState[id] = classroom
         }
         return newState
       }, {})
     }
-    case RENAME_SPINNER : {
+    case RENAME_CLASSROOM : {
       const { id, name } = action.payload
-      console.log("RENAME : ", id, name)
+      console.log("RENAMES RED : ", id, name)
       return {
         ...state,
         [id] : { ...state[id], name }
       }
     }
-    case SET_SCHEME : {
-      const { id, scheme } = action.payload
+    case SET_ROSTER : {
+      const { id, roster } = action.payload
       return {
         ...state,
-        [id] : { ...state[id], scheme }
+        [id] : { ...state[id], roster }
       }
     }
     default :

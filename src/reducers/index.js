@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import spinners from "./spinners"
-
-//import session    from './session';
+import classrooms from "./classrooms"
 
 export default combineReducers({
   spinners,
+  classrooms
 });

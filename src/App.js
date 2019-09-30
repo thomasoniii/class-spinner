@@ -5,10 +5,14 @@ import { List, ListItem, CollapsibleList, SimpleListItem, ListDivider } from "@r
 import { Button } from "@rmwc/button"
 import { Route, Switch } from "react-router-dom"
 import { useHistory } from "react-router"
+import { connect } from "react-redux"
 
 import Spinner from "./components/Spinner"
-import AddClassroom from "./components/add-classroom"
+import EditClassroom from "./components/edit-classroom"
 import EditSpinners from "./components/edit-spinners"
+
+import { selectSpinner, selectClassroom } from "actions"
+import { getSelectedSpinner, getSelectedClassroom } from "selectors"
 
 import "./App.css"
 
@@ -18,6 +22,8 @@ const App = props => {
 
   const history = useHistory()
 
+  const { spinners, classrooms, selectedSpinner, selectedClassroom } = props
+console.log("APP PROPS : ", selectedSpinner, props)
   return (
     <Fragment>
       <SimpleTopAppBar
@@ -32,21 +38,32 @@ const App = props => {
         </DrawerHeader>
         <DrawerContent>
           <List>
-            <CollapsibleList
-              handle={
-                <SimpleListItem
-                  text="Mr. Thomason's Class"
-                  metaIcon="chevron_right"
-                />
-              }
-              onOpen={() => console.log('open')}
-              onClose={() => console.log('close')}
-            >
-              <SimpleListItem text="Spinner 1" />
-              <SimpleListItem text="Spinner 2" />
-              <SimpleListItem text="Spinner 3" />
-              <ListItem><Button label="Edit classroom" outlined /></ListItem>
-            </CollapsibleList>
+            { Object.keys(classrooms).sort().map( classroomID => {
+              const classroom = classrooms[classroomID]
+              return <CollapsibleList
+                handle={
+                  <SimpleListItem
+                    text={ classroom.name }
+                    metaIcon="chevron_right"
+                  />
+                }
+                onOpen={() => console.log('open')}
+                onClose={() => console.log('close')}
+              >
+                { Object.keys(spinners).sort().map( spinnerID => {
+                  const spinner = spinners[spinnerID]
+                  return <SimpleListItem
+                    text={ spinner.name }
+                    onClick={() => {
+                      selectClassroom( classroomID )
+                      selectSpinner(spinnerID)
+                      history.push('/spinner')
+                    }}
+                  />
+                })}
+                <ListItem><Button label="Edit classroom" outlined /></ListItem>
+              </CollapsibleList>
+            })}
             <ListDivider />
             <ListItem className='centered-button-list-item'><Button label="Add classroom" raised onClick={ () => { setOpen(false); history.push('/add-classroom') } }/></ListItem>
             <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised onClick={ () => { setOpen(false); history.push('/edit-spinners') } }/></ListItem>
@@ -59,17 +76,28 @@ const App = props => {
           <div className="welcome-container">Welcome to the classroom spinner!</div>
         </Route>
         <Route path = "/spinner">
-          <Spinner scheme="Set1" canSpin={true} />
+          { selectedSpinner && selectedClassroom && <Spinner
+            scheme={ selectedSpinner.scheme }
+            kids={ selectedClassroom.roster }
+            canSpin={true}
+          /> }
         </Route>
         <Route path = "/edit-spinners">
           <EditSpinners />
         </Route>
         <Route path = "/add-classroom">
-          <AddClassroom />
+          <EditClassroom />
         </Route>
       </Switch>
     </Fragment>
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  classrooms : state.classrooms,
+  spinners : state.spinners,
+  selectedSpinner : state.spinners[getSelectedSpinner(state)],
+  selectedClassroom : state.classrooms[getSelectedClassroom(state)]
+})
+
+export default connect(mapStateToProps, { selectSpinner, selectClassroom })(App);
