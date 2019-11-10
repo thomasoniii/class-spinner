@@ -96,7 +96,7 @@ console.log("KIDS : ",kids)
   return (
     <div className="spinner-container">
       <svg style={{width : `${outerRadius * 2 + margin + pointerPadding}px`, height : `${outerRadius * 2 + margin}px`}}>
-        <g className={`spinner ${ spin ? "spinning" : ""}`}>
+        <g className={`spinner ${ spin ? "spinning" : ""}`} style={{transformOrigin : `${outerRadius + margin / 2}px ${outerRadius + margin / 2}px`}}>
           <clipPath id = "circle">
             <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} fill = 'blue'/>
           </clipPath>
