@@ -126,12 +126,14 @@ console.log("KIDS : ",kids)
           label="Spin the wheel"
           theme={['primaryBg']}
           onClick={() => {
-            setSpin(true);
-            //const newKids = [...kids]
-            //const lastKid = newKids.shift();
-            //newKids.push(lastKid)
-            setTimeout( () => setKids(pickWinner([...kids])), 2000)
-            setTimeout( () => setSpin(false), 4000)
+            if (spin === false) {
+              setSpin(true);
+              //const newKids = [...kids]
+              //const lastKid = newKids.shift();
+              //newKids.push(lastKid)
+              setTimeout( () => setKids(pickWinner([...kids])), 2000)
+              setTimeout( () => setSpin(false), 4000)
+            }
           }} />
       </div> }
     </div>
