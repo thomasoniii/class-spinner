@@ -86,7 +86,7 @@ console.log("SPINNER : ", props)
 
   const textOffset = outerRadius - innerRadius - 10
 
-  const colors = availableSchemes[props.scheme]
+  const colors = availableSchemes[props.scheme || "Set1"]
   const pointerPadding = 20
 
   // take the number of kids and divide by 360. That's what'll cover a kid.
