@@ -2,7 +2,8 @@ import {
   ADD_SPINNER,
   SELECT_SPINNER,
   RENAME_SPINNER,
-  SET_SCHEME
+  SET_SCHEME,
+  DELETE_SPINNER
 } from "actions"
 
 const INITIAL = {}
@@ -53,6 +54,19 @@ export default (state = INITIAL, action) => {
         ...state,
         [id] : { ...state[id], scheme }
       }
+    }
+    case DELETE_SPINNER : {
+      const {id} = action.payload
+      const nextSelectionIdx = Object.keys(state).sort().findIndex(spinnerId => spinnerId === id) - 1
+      const nextSelectionId = nextSelectionIdx > -1
+        ? Object.keys(state).sort()[nextSelectionIdx]
+        : Object.keys(state).sort()[1]
+      const newState = { ...state }
+      delete newState[id]
+      if (Object.keys(newState).length) {
+        newState[nextSelectionId] = { ...newState[nextSelectionId], selected : true }
+      }
+      return newState
     }
     default :
       return state

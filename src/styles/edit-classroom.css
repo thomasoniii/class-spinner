@@ -1,0 +1,34 @@
+.edit-classroom-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  margin-top : 10px;
+}
+
+.edit-classroom-container > .classroom-selector { grid-area: 1 / 1 / 2 / 3; }
+.edit-classroom-container > .classroom-name { grid-area: 2 / 1 / 3 / 2; }
+.edit-classroom-container > .classroom-list { grid-area: 3 / 1 / 9 / 2; }
+.edit-classroom-container > .spinner-selector { grid-area: 2 / 2 / 3 / 3; }
+.edit-classroom-container > .spinner-details { grid-area: 3 / 2 / 9 / 3; }
+
+.classroom-selector {
+  display: grid;
+  grid-template-columns: calc(100% - 96px) 96px;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.classroom-selector > .dropdown { grid-area: 1 / 1 / 2 / 2; }
+.classroom-selector > .buttons { grid-area: 1 / 2 / 2 / 3; }
+
+
+.dropdown .mdc-select {
+  width : 100%
+}
+
+.classroom-selector > .buttons {
+
+}

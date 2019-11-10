@@ -6,29 +6,35 @@ import * as serviceWorker from './serviceWorker';
 
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
-import createSagaMiddleware from 'redux-saga';
 import { BrowserRouter as Router } from 'react-router-dom';
 import reduxThunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import "../node_modules/material-components-web/dist/material-components-web.min.css"
 import "material-icons/iconfont/material-icons.css"
 import "../node_modules/@rmwc/list/collapsible-list.css"
 
 import reducers from './reducers';
-import rootSaga from './sagas';
+import savingMiddleware from "./saving-middleware"
 
-const sagaMiddleware = createSagaMiddleware();
-
-const createStoreWithMiddleware = applyMiddleware(sagaMiddleware, reduxThunk)(createStore);
-
-export const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
-sagaMiddleware.run(rootSaga)
+const preloadedState = localStorage.getItem('spinner')
+  ? JSON.parse(localStorage.getItem('spinner'))
+  : {}
+console.log("A");
+console.log(reducers);
+console.log(preloadedState);
+console.log(composeWithDevTools(applyMiddleware(reduxThunk, savingMiddleware)(createStore)))
+export const store = createStore(
+  reducers,
+  preloadedState,
+  composeWithDevTools(applyMiddleware(reduxThunk, savingMiddleware))
+)
+  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-        <App />
+      <App />
     </Router>
   </Provider>
 , document.getElementById('root'));

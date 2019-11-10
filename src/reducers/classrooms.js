@@ -1,6 +1,7 @@
 import {
   ADD_CLASSROOM,
   SELECT_CLASSROOM,
+  DELETE_CLASSROOM,
   RENAME_CLASSROOM,
   SET_ROSTER
 } from "actions"
@@ -46,6 +47,13 @@ export default (state = INITIAL, action) => {
         ...state,
         [id] : { ...state[id], name }
       }
+    }
+    case DELETE_CLASSROOM : {
+      console.log("DELETE CLASSROOM")
+      const {id} = action.payload
+      const newState = { ...state }
+      delete newState[id]
+      return newState
     }
     case SET_ROSTER : {
       const { id, roster } = action.payload

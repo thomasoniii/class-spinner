@@ -14,6 +14,7 @@ import * as actions from "actions"
 
 import '@material/dialog/dist/mdc.dialog.css'
 import '@material/button/dist/mdc.button.css'
+import '@material/icon-button/dist/mdc.icon-button.css';
 
 const INITIAL = {}
 
@@ -33,7 +34,7 @@ console.log("EDIT SPINNER : ", spinner)
           }
         }}
       >
-        <DialogTitle>Delet spinner?</DialogTitle>
+        <DialogTitle>Delete spinner?</DialogTitle>
         <DialogContent>Really delete {spinner.name}?</DialogContent>
         <DialogActions>
           <DialogButton action="close">Cancel</DialogButton>

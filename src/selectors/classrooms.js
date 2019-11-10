@@ -5,6 +5,6 @@ export const getClassrooms = (state) => state.classrooms
 export const getSelectedClassroom = createSelector(
   [getClassrooms],
   classrooms => {
-    return Object.keys(classrooms).find( id => classrooms[id].selected )
+    return Object.values(classrooms).find( room => room.selected )
   }
 )

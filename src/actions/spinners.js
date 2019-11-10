@@ -3,6 +3,7 @@ import pushid from "pushid"
 export const ADD_SPINNER = "ADD_SPINNER"
 export const SELECT_SPINNER = "SELECT_SPINNER"
 export const RENAME_SPINNER = "RENAME_SPINNER"
+export const DELETE_SPINNER = "DELETE_SPINNER"
 export const SET_SCHEME = "SET_SCHEME"
 
 export function addSpinner() {
@@ -32,5 +33,12 @@ export function setScheme(id, scheme) {
   return {
     type : SET_SCHEME,
     payload : { id, scheme }
+  }
+}
+
+export function deleteSpinner(id) {
+  return {
+    type : DELETE_SPINNER,
+    payload : { id }
   }
 }

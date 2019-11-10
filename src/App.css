@@ -16,3 +16,16 @@
 .selector-table td {
   cursor : pointer;
 }
+
+.classroom-item {
+  display : flex;
+  justify-content : space-between;
+  align-items : center;
+  width : 100%
+}
+
+.classroom-item .rmwc-icon {
+  padding : 0;
+  width : 24px;
+  height : 24px;
+}
