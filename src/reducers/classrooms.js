@@ -3,7 +3,9 @@ import {
   SELECT_CLASSROOM,
   DELETE_CLASSROOM,
   RENAME_CLASSROOM,
-  SET_ROSTER
+  SET_ROSTER,
+  SET_STUDENT_STATUS,
+  DELETE_SPINNER
 } from "actions"
 
 const INITIAL = {}
@@ -19,7 +21,9 @@ export default (state = INITIAL, action) => {
           id,
           name : "New Classroom",
           scheme : "Set1",
-          selected : true
+          selected : true,
+          spinners : {},
+          roster : []
         }
       }
     }
@@ -61,6 +65,38 @@ export default (state = INITIAL, action) => {
         ...state,
         [id] : { ...state[id], roster }
       }
+    }
+    case SET_STUDENT_STATUS : {
+      const { id, spinnerId, studentName, status } = action.payload
+
+      return {
+        ...state,
+        [id] : {
+          ...state[id],
+          spinners : {
+            ...state[id].spinners,
+            [studentName] : status
+          }
+        }
+      }
+
+    }
+    case DELETE_SPINNER : {
+      const { id } = action.payload
+      return Object.keys(state).reduce( (newState, classroomId) => {
+        const classroom = state[classroomId]
+        newState[classroomId] = classroom
+        if (classroom.spinners[id] !== undefined) {
+          newState[classroomId] = {
+            ...classroom,
+            spinners : {
+              ...classroom.spinners
+            }
+          }
+          delete newState[classroomId].spinners[id]
+        }
+        return newState
+      }, {})
     }
     default :
       return state

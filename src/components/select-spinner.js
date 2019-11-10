@@ -12,11 +12,9 @@ const SelectSpinner = (props) => {
     label="Select spinner"
     outlined
     options={ Object.values(props.spinners).map( spinner => ({ value : spinner.id, label : spinner.name }) ) }
-    value = { Object.keys(props.spinners).find( spinnerId => props.spinners[spinnerId].selected === true) }
+    value = { props.selectedSpinner.id }
     onChange={ e => props.selectSpinner(e.target.value) }
   />)
 }
 
-const mapStateToProps = state => ({ spinners : state.spinners })
-
-export default connect(mapStateToProps, { selectSpinner : actions.selectSpinner })(SelectSpinner)
+export default SelectSpinner

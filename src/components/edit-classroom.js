@@ -5,10 +5,11 @@ import { IconButton } from "@rmwc/icon-button"
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogButton } from "@rmwc/dialog"
 
 import * as actions from "actions"
-import { getSelectedClassroom } from "selectors"
+import { getSelectedClassroom, getSelectedSpinner } from "selectors"
 
 import SelectSpinner from "./select-spinner"
 import ClassroomSelector from "./classroom-selector"
+import SpinnerDetails from "./spinner-details"
 
 import "styles/edit-classroom.css"
 import '@material/dialog/dist/mdc.dialog.css'
@@ -24,7 +25,12 @@ const EditClassroom = (props) => {
     addClassroom,
     deleteClassroom,
     selectClassroom,
-    selectedClassroom = {}
+    selectedClassroom = {},
+    spinners,
+    selectedSpinner,
+    selectSpinner,
+
+    setStudentStatus
   } = props
 
   const [open, setOpen] = React.useState(false)
@@ -90,22 +96,32 @@ const EditClassroom = (props) => {
           onChange={ e => setRoster(selectedClassroom.id, e.target.value.split(/\r?\n/)) }
         />
 
-        <div className="spinner-selector"><SelectSpinner /></div>
+        <div className="spinner-selector">
+          <SelectSpinner
+            spinners={spinners}
+            selectedSpinner={selectedSpinner}
+            selectSpinner={selectSpinner}/>
+        </div>
+        <div className="spinner-details">
+          <SpinnerDetails
+            classroom={selectedClassroom}
+            spinner={selectedSpinner}
+            updateStatus={setStudentStatus}
+          />
+        </div>
 
       </div>
     </Fragment>
   )
 }
 
-const XmapStateToProps = (state, props) => ({
-  classroom : {},
-})
-
 const mapStateToProps = (state, props) => {
-  console.log("SP : ", state, props);
+  console.log("SP : ", state, props, getSelectedSpinner(state));
   return {
     selectedClassroom : getSelectedClassroom(state),
-    classrooms : state.classrooms
+    classrooms : state.classrooms,
+    selectedSpinner : getSelectedSpinner(state),
+    spinners : state.spinners
   }
 }
 

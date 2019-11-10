@@ -5,6 +5,7 @@ export const DELETE_CLASSROOM = "DELETE_CLASSROOM"
 export const SELECT_CLASSROOM = "SELECT_CLASSROOM"
 export const RENAME_CLASSROOM = "RENAME_CLASSROOM"
 export const SET_ROSTER = "SET_ROSTER"
+export const SET_STUDENT_STATUS = "SET_STUDENT_STATUS"
 
 export const addClassroom = ( id = pushid() ) => {
   return async dispatch => {
@@ -40,5 +41,12 @@ export const setRoster = (id, roster) => {
   return {
     type : SET_ROSTER,
     payload : { id, roster }
+  }
+}
+
+export const setStudentStatus = (id, spinnerId, studentName, status) => {
+  return {
+    type : SET_STUDENT_STATUS,
+    payload : { id, spinnerId, studentName, status }
   }
 }
