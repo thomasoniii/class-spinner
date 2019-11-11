@@ -15,6 +15,7 @@ import { connect } from "react-redux"
 import EditClassroom from "./components/edit-classroom"
 import EditSpinners from "./components/edit-spinners"
 import Classroom from "./components/classroom"
+import Spinner from "./components/spinner"
 
 import * as actions from "actions"
 
@@ -40,8 +41,10 @@ const App = props => {
         onClose={evt => {
           if (evt.detail.action === "accept") {
             try {
-              if (JSON.parse(temporaryState)) {
-                actions.initializeStore(temporaryState)
+              console.log("A")
+              if (JSON.parse(temporaryState.length ? temporaryState : "{}")) {
+console.log("B")
+                actions.initializeStore(temporaryState.length ? temporaryState : undefined)
               }
             }
             catch(e) {
@@ -108,7 +111,28 @@ const App = props => {
       <TopAppBarFixedAdjust />
       <Switch>
         <Route exact path = "/">
-          <div className="welcome-container">Welcome to the classroom spinner!</div>
+          <div className="welcome-container">
+            <div>Welcome to the classroom spinner!</div>
+            <div className="spinner">
+              <Spinner
+                spinner={ { scheme : "Set1" } }
+                classroom= {{
+                  roster : ["","","","","","","","","","","","","","","","","",""],
+                  spinners : {}
+                }}
+                canSpin={false}
+                outerRadius={100}
+              />
+            </div>
+            <div>
+              <Button label="Spin the wheel!" raised
+                onClick={ () => {
+                  setOpen(false)
+                  history.push("/classroom")
+                }
+              }/>
+            </div>
+          </div>
         </Route>
         <Route path = "/classroom">
           <Classroom />

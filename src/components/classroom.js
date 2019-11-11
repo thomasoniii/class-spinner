@@ -13,15 +13,15 @@ import "styles/classroom.css"
 const Classroom = (props) => {
   const {
     classrooms,
-    selectedClassroom = {},
+    selectedClassroom,
     selectClassroom,
     spinners,
-    selectedSpinner = {},
+    selectedSpinner,
     selectSpinner,
     setRoster,
     setStudentStatus
   } = props
-
+console.log("SEL : ", selectedClassroom, selectedSpinner)
   return (
     <Fragment>
       <div className="classroom-container">
@@ -36,7 +36,6 @@ const Classroom = (props) => {
         <div className="spinner-selector">
           <SelectSpinner
             spinners={spinners}
-            selectedSpinner={selectedSpinner}
             selectSpinner={selectSpinner}/>
         </div>
 

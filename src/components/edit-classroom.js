@@ -103,11 +103,11 @@ const EditClassroom = (props) => {
             selectSpinner={selectSpinner}/>
         </div>
         <div className="spinner-details">
-          <SpinnerDetails
+          { selectedClassroom.id && selectedSpinner && <SpinnerDetails
             classroom={selectedClassroom}
             spinner={selectedSpinner}
             updateStatus={setStudentStatus}
-          />
+          /> }
         </div>
 
       </div>
