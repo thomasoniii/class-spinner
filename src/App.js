@@ -63,7 +63,7 @@ const App = props => {
             fullwidth
             label="App Data"
             rows={8}
-            value={temporaryState || serializedState}
+            value={temporaryState !== undefined ? temporaryState : serializedState}
             onChange={ e => setTemporaryState(e.target.value) }
           />
         </DialogContent>
