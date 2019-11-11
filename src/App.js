@@ -89,17 +89,17 @@ const App = props => {
             <ListItem className='centered-button-list-item'><Button label="Spin the wheel!" raised
               onClick={ () => {
                 setOpen(false)
-                history.push("/classroom")
+                history.push("classroom")
               }
             }/></ListItem>
             <ListDivider />
             <ListItem className='centered-button-list-item'><Button label="Edit classrooms" raised
               onClick={ () => {
                 setOpen(false)
-                history.push("/edit-classroom")
+                history.push("edit-classroom")
               }
             }/></ListItem>
-            <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised onClick={ () => { setOpen(false); history.push('/edit-spinners') } }/></ListItem>
+            <ListItem className='centered-button-list-item'><Button label="Edit Spinners" raised onClick={ () => { setOpen(false); history.push('edit-spinners') } }/></ListItem>
             <ListDivider />
             <ListItem className='centered-button-list-item'><Button label="Import/Export data" raised
               onClick={ () => setImportOpen(true) }/></ListItem>
@@ -126,7 +126,7 @@ const App = props => {
               <Button label="Spin the wheel!" raised
                 onClick={ () => {
                   setOpen(false)
-                  history.push("/classroom")
+                  history.push("classroom")
                 }
               }/>
             </div>
