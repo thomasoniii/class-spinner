@@ -1,11 +1,11 @@
 .classroom-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   margin-top : 10px;
 }
 .classroom-container > .classroom-selector { grid-area: 1 / 1 / 2 / 2; }
 .classroom-container > .spinner-selector { grid-area: 1 / 2 / 2 / 3; }
-.classroom-container > .spinner { grid-area: 2 / 1 / 6 / 3; }
+.classroom-container > .spinner { grid-area: 2 / 1 / 11 / 3; }

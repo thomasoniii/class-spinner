@@ -75,7 +75,9 @@ export default props => {
 
   return (
     <div className="spinner-container">
-      <svg style={{width : `${outerRadius * 2 + margin + pointerPadding}px`, height : `${outerRadius * 2 + margin}px`}}>
+      <svg
+        style={{width : "70vmin", height : "70vmin"}}
+        viewBox={`0 0 ${outerRadius * 2 + margin + pointerPadding} ${outerRadius * 2 + margin}`}>
         <g className={`spinner ${ spin ? "spinning" : ""}`} style={{transformOrigin : `${outerRadius + margin / 2}px ${outerRadius + margin / 2}px`}}>
           <clipPath id = "circle">
             <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} fill = 'blue'/>
