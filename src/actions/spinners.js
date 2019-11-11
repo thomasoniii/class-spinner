@@ -22,7 +22,6 @@ export function selectSpinner(id) {
 }
 
 export function renameSpinner(id, name) {
-  console.log("RE S ", id,name)
   return {
     type : RENAME_SPINNER,
     payload : { id, name }

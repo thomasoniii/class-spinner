@@ -1,7 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
 import { List, SimpleListItem, ListDivider } from "@rmwc/list"
-import { Button } from "@rmwc/button"
 import { Fab } from "@rmwc/fab"
 
 import EditSpinner from "./edit-spinner"
@@ -40,7 +39,7 @@ const EditSpinners = (props) => {
           onClick={ props.addSpinner} />
       </div>
 
-      { props.selectedSpinnerID && <EditSpinner spinnerID={props.selectedSpinnerID} /> }
+      { props.selectedSpinner && <EditSpinner spinnerID={props.selectedSpinner.id} /> }
 
     </div>
   )
@@ -48,7 +47,7 @@ const EditSpinners = (props) => {
 
 const mapStateToProps = (state) => ({
   spinners : state.spinners,
-  selectedSpinnerID : getSelectedSpinner(state)
+  selectedSpinner : getSelectedSpinner(state)
 })
 
 export default connect(mapStateToProps, { addSpinner, selectSpinner })(EditSpinners)

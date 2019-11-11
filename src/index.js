@@ -20,10 +20,7 @@ import savingMiddleware from "./saving-middleware"
 const preloadedState = localStorage.getItem('spinner')
   ? JSON.parse(localStorage.getItem('spinner'))
   : {}
-console.log("A");
-console.log(reducers);
-console.log(preloadedState);
-console.log(composeWithDevTools(applyMiddleware(reduxThunk, savingMiddleware)(createStore)))
+
 export const store = createStore(
   reducers,
   preloadedState,

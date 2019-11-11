@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment } from "react"
 import { connect } from "react-redux"
 import colorbrewer from "colorbrewer"
 import { Select } from "@rmwc/select"
@@ -6,8 +6,7 @@ import { TextField } from "@rmwc/textfield"
 import { IconButton } from "@rmwc/icon-button"
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogButton } from "@rmwc/dialog"
 
-import { setScheme, renameSpinner } from "actions"
-import Spinner from "./Spinner"
+import Spinner from "./spinner"
 import "styles/edit-spinner.css"
 
 import * as actions from "actions"
@@ -16,13 +15,11 @@ import '@material/dialog/dist/mdc.dialog.css'
 import '@material/button/dist/mdc.button.css'
 import '@material/icon-button/dist/mdc.icon-button.css';
 
-const INITIAL = {}
-
 const EditSpinner = props => {
   const [open, setOpen] = React.useState(false)
 
   const { spinner, setScheme, renameSpinner, deleteSpinner } = props
-console.log("EDIT SPINNER : ", spinner)
+
   return (
     <Fragment>
       <Dialog
@@ -46,10 +43,13 @@ console.log("EDIT SPINNER : ", spinner)
       <div className="spinner-editor">
         <div className="spinner">
           <Spinner
-            scheme={spinner.scheme}
+            spinner={spinner}
+            classroom= {{
+              roster : ["","","","","","","","","","","","","","","","","",""],
+              spinners : {}
+            }}
             canSpin={false}
             outerRadius={100}
-            kids={["","","","","","","","","","","","","","","","","",""]}
           />
         </div>
         <div className="spinner-editor-inputs">

@@ -9,7 +9,6 @@ import {
 const INITIAL = {}
 
 export default (state = INITIAL, action) => {
-  console.log("RED HERE : ", action)
   switch(action.type) {
     case ADD_SPINNER : {
       const { id } = action.payload
@@ -27,7 +26,6 @@ export default (state = INITIAL, action) => {
       const { id : selectedID } = action.payload
 
       return Object.entries(state).reduce( (newState, [id, spinner]) => {
-        console.log("MAPPING : ", id, spinner, selectedID)
         if (selectedID === id && spinner.selected === false) {
           newState[id] = { ...state[id], selected : true }
         }
@@ -42,7 +40,6 @@ export default (state = INITIAL, action) => {
     }
     case RENAME_SPINNER : {
       const { id, name } = action.payload
-      console.log("RENAME : ", id, name)
       return {
         ...state,
         [id] : { ...state[id], name }

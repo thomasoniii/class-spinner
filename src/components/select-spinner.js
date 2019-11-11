@@ -1,13 +1,9 @@
 import React from "react"
-import { connect } from "react-redux"
 import { Select } from "@rmwc/select"
 
 import '@material/select/dist/mdc.select.css';
 
-import * as actions from "actions"
-
 const SelectSpinner = (props) => {
-  console.log("PROPS : ", props)
   return (<Select
     label="Select spinner"
     outlined

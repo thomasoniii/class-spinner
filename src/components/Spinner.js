@@ -11,64 +11,29 @@ const availableSchemes = Object.entries(colorbrewer).reduce( (available, [key, s
   return available
 }, {} )
 
-console.log("AVAILABLE : ", colorbrewer)
-
-const pickWinner = ( kids ) => {
+const pickWinner = ( kids, classroom, spinner, setRoster, setStudentStatus, setWinner ) => {
 
   const lastWinner = kids.find(kid => kid.winner)
   if (lastWinner) {
-    lastWinner.winner = false;
-    lastWinner.canWin = false;
+    setStudentStatus(classroom.id, spinner.id, lastWinner.name, "Picked")
+    lastWinner.status = "Picked";
   }
 
-  const winnableKids = kids.filter( kid => kid.canWin )
+  const winnableKids = kids.filter( kid => kid.status === "Available" )
 
   const winnerIndex = Math.floor(Math.random() * winnableKids.length)
   const winner = winnableKids[winnerIndex]
   const kidIndex = kids.findIndex(kid => kid === winner)
-  winner.winner = true;
+  setWinner(winner.name)
 
   if (kidIndex > 0) {
     const movableKids = kids.splice(0, kidIndex)
     kids.push(...movableKids)
   }
-  return kids
+
+  setRoster(classroom.id, kids.map(row => row.name))
+  setStudentStatus(classroom.id, spinner.id, winner.name, "Picked")
 }
-
-const defaultKids = [
-  "Jim Thomason",
-  "Carolyn Thomason",
-  "Alex Thomason",
-  "Anakin Berry",
-  "Sally Thomason",
-  "Tucker Thomason",
-  "Grandma Thomason",
-  "Grandpa Thomason",
-  "Kirk",
-  "Spock",
-  "McCoy",
-  "Scotty",
-  "Uhura",
-  "Chekov",
-  "Sulu",
-  "Picard",
-  "Riker",
-  "Troi",
-  "Data",
-  "LaForge",
-  "Worf",
-  "Crusher",
-  "O'Brien",
-  "Wesley",
-  "Janeway",
-  "Tuvok",
-  "Paris",
-  "James Augustus Thomason III"
-]
-
-const kidsWithColors = defaultKids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) )
-
-console.log("COLORS : ", colorbrewer)
 
 const heightForAngle = (angle, outerRadius) => {
   const radians = angle / 360 * 2 * Math.PI
@@ -77,22 +42,37 @@ const heightForAngle = (angle, outerRadius) => {
 }
 
 export default props => {
-console.log("SPINNER : ", props)
+
+  const { classroom, spinner, setRoster, setStudentStatus } = props
+
   const [spin, setSpin] = useState(false);
-  //const [kids, setKids] = useState(kidsWithColors);
-  const [kids, setKids] = useState(props.kids.map( (kid, i) => ( { name : kid, color : i, canWin : true } ) ));
+  const [winner, setWinner] = useState("nobody-at-all")
+
+  const spinnerStatus = classroom.spinners[spinner.id] || {}
+
+  const kids = classroom.roster.map( (kid, i) => {
+    const row = { name : kid, color : i }
+    if (spinnerStatus[kid] !== undefined) {
+      row.status = spinnerStatus[kid]
+    }
+    else {
+      row.status = "Available"
+    }
+
+    return row
+  })
 
   const { outerRadius = 400, innerRadius = 20, margin = 20 } = props
 
   const textOffset = outerRadius - innerRadius - 10
 
-  const colors = availableSchemes[props.scheme || "Set1"]
+  const colors = availableSchemes[spinner.scheme || "Set1"]
   const pointerPadding = 20
 
   // take the number of kids and divide by 360. That's what'll cover a kid.
   // half of that will be the +/0 angle
   const wedgeAngle = 360 / kids.length / 2
-console.log("KIDS : ",kids)
+
   return (
     <div className="spinner-container">
       <svg style={{width : `${outerRadius * 2 + margin + pointerPadding}px`, height : `${outerRadius * 2 + margin}px`}}>
@@ -107,11 +87,11 @@ console.log("KIDS : ",kids)
               <g clipPath="url(#circle)" key={kid.name + i}>
                 <g transform={`translate(${outerRadius + innerRadius + textOffset + margin / 2}, ${outerRadius + margin / 2}) rotate(${angle}, -${innerRadius + textOffset}, 0)`}>
                   <path className="wedge" d={`M${-innerRadius - textOffset},0 l${outerRadius}, ${heightForAngle(wedgeAngle, outerRadius)} l0, ${-2 * heightForAngle(wedgeAngle, outerRadius)} Z`}
-                    fill={ kid.canWin ? colors[kid.color % colors.length] : "#444444"}
-                    stroke={ kid.winner ? "gold" : "black"}
-                    strokeWidth={ kid.winner ? "10" : "2"} />
+                    fill={ kid.status !== "Picked" || kid.name === winner ? colors[kid.color % colors.length] : "#444444"}
+                    stroke={ kid.name === winner ? "gold" : "black"}
+                    strokeWidth={ kid.name === winner ? "10" : "2"} />
 
-                  <text textAnchor="end" alignmentBaseline="middle" fill={kid.canWin ? "black" : "#666666"}>{kid.name}</text>
+                  <text textAnchor="end" alignmentBaseline="middle" fill={kid.status !== "Picked" || kid.name === winner  ? "black" : "#666666"}>{kid.name}</text>
                 </g>
               </g>
             )
@@ -131,7 +111,7 @@ console.log("KIDS : ",kids)
               //const newKids = [...kids]
               //const lastKid = newKids.shift();
               //newKids.push(lastKid)
-              setTimeout( () => setKids(pickWinner([...kids])), 2000)
+              setTimeout( () => pickWinner([...kids], classroom, spinner, setRoster, setStudentStatus, setWinner), 2000)
               setTimeout( () => setSpin(false), 4000)
             }
           }} />

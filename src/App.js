@@ -12,9 +12,9 @@ import { Route, Switch } from "react-router-dom"
 import { useHistory } from "react-router"
 import { connect } from "react-redux"
 
-import Spinner from "./components/Spinner"
 import EditClassroom from "./components/edit-classroom"
 import EditSpinners from "./components/edit-spinners"
+import Classroom from "./components/classroom"
 
 import * as actions from "actions"
 
@@ -25,7 +25,7 @@ import '@material/icon-button/dist/mdc.icon-button.css';
 
 const App = props => {
 
-  const { spinners, classrooms, selectedSpinner, selectedClassroom, addClassroom, deleteClassroom, serializedState } = props
+  const { serializedState } = props
 
   const [open, setOpen] = useState(false)
   const [importOpen, setImportOpen] = React.useState(false)
@@ -33,7 +33,6 @@ const App = props => {
 
   const history = useHistory()
 
-console.log("APP PROPS : ", selectedSpinner, props)
   return (
     <Fragment>
       <Dialog
@@ -41,8 +40,9 @@ console.log("APP PROPS : ", selectedSpinner, props)
         onClose={evt => {
           if (evt.detail.action === "accept") {
             try {
-              const parsed = JSON.parse(temporaryState)
-              actions.initializeStore(temporaryState)
+              if (JSON.parse(temporaryState)) {
+                actions.initializeStore(temporaryState)
+              }
             }
             catch(e) {
               console.log("CANNOT IMPORT INVALID DATA : ", e)
@@ -81,19 +81,16 @@ console.log("APP PROPS : ", selectedSpinner, props)
       <Drawer modal open={open} onClose={() => setOpen(false)}>
         <DrawerHeader>
           <DrawerTitle>Classroom Spinner</DrawerTitle>
-          <DrawerSubtitle>Subtitle</DrawerSubtitle>
+          <DrawerSubtitle>Choose your action</DrawerSubtitle>
         </DrawerHeader>
         <DrawerContent>
           <List>
-            { Object.keys(classrooms).sort().map( classroomID => {
-              const classroom = classrooms[classroomID]
-              return (<ListItem key={classroomID} onClick={() => {
+            <ListItem className='centered-button-list-item'><Button label="Spin the wheel!" raised
+              onClick={ () => {
                 setOpen(false)
-                history.push(`/classroom/${classroomID}`)
-              }}>
-                  {classroom.name}
-              </ListItem>)
-            })}
+                history.push("/classroom")
+              }
+            }/></ListItem>
             <ListDivider />
             <ListItem className='centered-button-list-item'><Button label="Edit classrooms" raised
               onClick={ () => {
@@ -113,12 +110,8 @@ console.log("APP PROPS : ", selectedSpinner, props)
         <Route exact path = "/">
           <div className="welcome-container">Welcome to the classroom spinner!</div>
         </Route>
-        <Route path = "/spinner">
-          { selectedSpinner && selectedClassroom && <Spinner
-            scheme={ selectedSpinner.scheme }
-            kids={ selectedClassroom.roster }
-            canSpin={true}
-          /> }
+        <Route path = "/classroom">
+          <Classroom />
         </Route>
         <Route path = "/edit-spinners">
           <EditSpinners />

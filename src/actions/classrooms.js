@@ -15,7 +15,6 @@ export const addClassroom = ( id = pushid() ) => {
 }
 
 export const deleteClassroom = (id) => {
-  console.log("DEL : ", id)
   return {
     type : DELETE_CLASSROOM,
     payload : {id}
@@ -30,7 +29,6 @@ export const selectClassroom = (id) => {
 }
 
 export const renameClassroom = (id, name) => {
-  console.log("RENAMES : ", id, name)
   return {
     type : RENAME_CLASSROOM,
     payload : { id, name }

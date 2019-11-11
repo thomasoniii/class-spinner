@@ -11,7 +11,7 @@ import {
 const INITIAL = {}
 
 export default (state = INITIAL, action) => {
-  console.log("RED HERE : ", action)
+
   switch(action.type) {
     case ADD_CLASSROOM : {
       const { id } = action.payload
@@ -31,7 +31,6 @@ export default (state = INITIAL, action) => {
       const { id : selectedID } = action.payload
 
       return Object.entries(state).reduce( (newState, [id, classroom]) => {
-        console.log("MAPPING : ", id, classroom, selectedID)
         if (selectedID === id && classroom.selected === false) {
           newState[id] = { ...state[id], selected : true }
         }
@@ -46,14 +45,12 @@ export default (state = INITIAL, action) => {
     }
     case RENAME_CLASSROOM : {
       const { id, name } = action.payload
-      console.log("RENAMES RED : ", id, name)
       return {
         ...state,
         [id] : { ...state[id], name }
       }
     }
     case DELETE_CLASSROOM : {
-      console.log("DELETE CLASSROOM")
       const {id} = action.payload
       const newState = { ...state }
       delete newState[id]
@@ -69,16 +66,34 @@ export default (state = INITIAL, action) => {
     case SET_STUDENT_STATUS : {
       const { id, spinnerId, studentName, status } = action.payload
 
-      return {
+      const newState = {
         ...state,
         [id] : {
           ...state[id],
           spinners : {
             ...state[id].spinners,
-            [studentName] : status
+            [spinnerId] : {
+              ...state[id].spinners[spinnerId],
+              [studentName] : status
+            }
           }
         }
       }
+
+      const anyoneAvailable = Object.values(newState[id].spinners[spinnerId]).some(status => status === "Available")
+        || Object.values(newState[id].spinners[spinnerId]).length !== newState[id].roster.length
+      if (!anyoneAvailable) {
+        const oldStatuses = newState[id].spinners[spinnerId]
+        newState[id].spinners[spinnerId] = Object.keys(oldStatuses).reduce( (newStatuses, studentName) => {
+          newStatuses[studentName] = oldStatuses[studentName] === "Picked"
+            ? "Available"
+            : oldStatuses[studentName]
+          return newStatuses
+        }, {})
+        newState[id].spinners[spinnerId][studentName] = status
+      }
+
+      return newState
 
     }
     case DELETE_SPINNER : {
