@@ -9,7 +9,7 @@ import '@rmwc/data-table/data-table.css'
 export default props => {
 
   const { classroom, spinner } = props
-console.log("DETAIL PROPS : ", props)
+
   const spinnerStatus = classroom.spinners[spinner.id] || {}
   const rosterStatus = classroom.roster.map( kid => {
     const row = { kid }

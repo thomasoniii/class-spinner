@@ -16,14 +16,17 @@
 .spinner-editor {
   display : flex;
   flex-direction : column;
-  justify-content : space-between;
-  width : 400px;
+  justify-content : flex-start;
+}
+
+
+.spinner-editor-inputs > div {
+  margin : 5px;
 }
 
 .spinner-editor-inputs {
   display : flex;
   flex-direction : row;
-  justify-content : space-between;
-  padding-top : 25px;
+  justify-content :center;
   align-items : center;
 }

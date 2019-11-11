@@ -35,7 +35,6 @@ const EditClassroom = (props) => {
 
   const [open, setOpen] = React.useState(false)
 
-  console.log("EDIT CLASS : ", classroom, renameClassroom, setRoster, props, selectedClassroom)
   return (
     <Fragment>
       <Dialog
@@ -116,7 +115,6 @@ const EditClassroom = (props) => {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log("SP : ", state, props, getSelectedSpinner(state));
   return {
     selectedClassroom : getSelectedClassroom(state),
     classrooms : state.classrooms,

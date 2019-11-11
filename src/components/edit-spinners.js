@@ -19,6 +19,10 @@ const EditSpinners = (props) => {
     <div className="edit-spinners-container">
 
       <div>
+        <Fab
+          label="Add Spinner"
+          theme={['primaryBg']}
+          onClick={ props.addSpinner} />
         <List>
           <SimpleListItem text="Spinners" disabled={true}/>
           <ListDivider />
@@ -32,11 +36,6 @@ const EditSpinners = (props) => {
             />
           })}
         </List>
-
-        <Fab
-          label="Add Spinner"
-          theme={['primaryBg']}
-          onClick={ props.addSpinner} />
       </div>
 
       { props.selectedSpinner && <EditSpinner spinnerID={props.selectedSpinner.id} /> }

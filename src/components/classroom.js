@@ -21,7 +21,7 @@ const Classroom = (props) => {
     setRoster,
     setStudentStatus
   } = props
-console.log("SEL : ", selectedClassroom, selectedSpinner)
+
   return (
     <Fragment>
       <div className="classroom-container">
