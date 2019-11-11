@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import reduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -30,7 +30,7 @@ export const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router basename="/">
       <App />
     </Router>
   </Provider>
