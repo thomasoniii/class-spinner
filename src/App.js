@@ -30,7 +30,7 @@ const App = props => {
 
   const [open, setOpen] = useState(false)
   const [importOpen, setImportOpen] = React.useState(false)
-  const [temporaryState, setTemporaryState] = React.useState(serializedState)
+  const [temporaryState, setTemporaryState] = React.useState(undefined)
 
   const history = useHistory()
 
@@ -41,10 +41,8 @@ const App = props => {
         onClose={evt => {
           if (evt.detail.action === "accept") {
             try {
-              console.log("A")
               if (JSON.parse(temporaryState.length ? temporaryState : "{}")) {
-console.log("B")
-                actions.initializeStore(temporaryState.length ? temporaryState : undefined)
+                actions.initializeStore(temporaryState.length ? temporaryState : "{}")
               }
             }
             catch(e) {
@@ -52,7 +50,7 @@ console.log("B")
             }
           }
           else {
-            setTemporaryState(serializedState)
+            setTemporaryState(undefined)
             setImportOpen(false)
           }
         }}
@@ -65,7 +63,7 @@ console.log("B")
             fullwidth
             label="App Data"
             rows={8}
-            value={temporaryState}
+            value={temporaryState || serializedState}
             onChange={ e => setTemporaryState(e.target.value) }
           />
         </DialogContent>
