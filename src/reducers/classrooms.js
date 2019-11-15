@@ -5,7 +5,8 @@ import {
   RENAME_CLASSROOM,
   SET_ROSTER,
   SET_STUDENT_STATUS,
-  DELETE_SPINNER
+  DELETE_SPINNER,
+  RESET_SPINNER
 } from "actions"
 
 const INITIAL = {}
@@ -112,6 +113,26 @@ export default (state = INITIAL, action) => {
         }
         return newState
       }, {})
+    }
+    case RESET_SPINNER : {
+      const { id, spinnerId } = action.payload
+
+      const newState = {
+        ...state,
+        [id] : {
+          ...state[id],
+          spinners : {
+            ...state[id].spinners,
+            [spinnerId] : state[id].roster.reduce( (newSpinners, studentName) => {
+              newSpinners[studentName] = "Available"
+              return newSpinners
+            }, {})
+          }
+        }
+      }
+
+      return newState
+
     }
     default :
       return state

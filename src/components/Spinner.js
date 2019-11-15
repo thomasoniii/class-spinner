@@ -48,12 +48,21 @@ const renderKidName = (kid) => {
   return `${kid.name}${kid.status === "Suspended" ? "." : ""}`
 }
 
+const defaultWinner = "nobody-at-all"
+
 export default props => {
 
-  const { classroom, spinner, setRoster, setStudentStatus = () => {} } = props
+  const {
+    classroom,
+    spinner,
+    setRoster,
+    setStudentStatus = () => {},
+    resetSpinner = () => {},
+    setOpen
+  } = props
 
   const [spin, setSpin] = useState(false);
-  const [winner, setWinner] = useState("nobody-at-all")
+  const [winner, setWinner] = useState(defaultWinner)
 
   const spinnerStatus = classroom.spinners[spinner.id] || {}
 
@@ -102,7 +111,7 @@ export default props => {
                     onClick= {
                       () => {
                         if (kid.name === winner) {
-                          setWinner("nobody-at-all")
+                          setWinner(defaultWinner)
                           setStudentStatus(classroom.id, spinner.id, kid.name, "Available")
                         }
                         else {
@@ -128,7 +137,18 @@ export default props => {
         </g>
         { props.canSpin && <path d="M480,250 L548,240 L548,260 Z" className="spinner-pointer" /> }
       </svg>
-      { props.canSpin && <div>
+      { props.canSpin && <div className='spinner-actions'>
+        <Fab
+          label="Reset spinner"
+          style={{ backgroundColor: 'var(--mdc-theme-error)' }}
+          onClick={() => {
+            if (spin === false) {
+              if (window.confirm("Really reset this spinner?")) {
+                setWinner(defaultWinner)
+                resetSpinner(classroom.id, spinner.id)
+              }
+            }
+          }} />
         <Fab
           label="Spin the wheel"
           theme={['primaryBg']}
@@ -142,6 +162,13 @@ export default props => {
               setTimeout( () => setSpin(false), 1500)
             }
           }} />
+      { setOpen && <Fab
+          label="Close"
+          onClick={() => {
+            if (spin === false) {
+              setOpen(false)
+            }
+          }} /> }
       </div> }
     </div>
   )

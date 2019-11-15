@@ -25,7 +25,8 @@ const Classroom = (props) => {
     selectedSpinner,
     selectSpinner,
     setRoster,
-    setStudentStatus
+    setStudentStatus,
+    resetSpinner
   } = props
 
   const [open, setOpen] = React.useState(selectedClassroom && selectedSpinner)
@@ -76,6 +77,8 @@ const Classroom = (props) => {
             setStudentStatus={setStudentStatus}
             setRoster={setRoster}
             outerRadius={600}
+            resetSpinner={resetSpinner}
+            setOpen={setOpen}
           />
           </div>
 

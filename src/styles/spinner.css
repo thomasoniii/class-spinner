@@ -36,3 +36,8 @@ text {
 .spinning {
   animation : spin 1.5s ease-in-out 1;
 }
+
+.spinner-actions {
+  display : flex;
+  justify-content : space-between
+}

@@ -6,6 +6,7 @@ export const SELECT_CLASSROOM = "SELECT_CLASSROOM"
 export const RENAME_CLASSROOM = "RENAME_CLASSROOM"
 export const SET_ROSTER = "SET_ROSTER"
 export const SET_STUDENT_STATUS = "SET_STUDENT_STATUS"
+export const RESET_SPINNER = "RESET_SPINNER"
 
 export const addClassroom = ( id = pushid() ) => {
   return async dispatch => {
@@ -46,5 +47,12 @@ export const setStudentStatus = (id, spinnerId, studentName, status) => {
   return {
     type : SET_STUDENT_STATUS,
     payload : { id, spinnerId, studentName, status }
+  }
+}
+
+export const resetSpinner = (id, spinnerId) => {
+  return {
+    type : RESET_SPINNER,
+    payload : { id, spinnerId }
   }
 }
