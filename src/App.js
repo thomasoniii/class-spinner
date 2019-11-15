@@ -15,7 +15,7 @@ import { connect } from "react-redux"
 import EditClassroom from "./components/edit-classroom"
 import EditSpinners from "./components/edit-spinners"
 import Classroom from "./components/classroom"
-import Spinner from "./components/spinner"
+import ClassroomGrid from "./components/classroom-grid"
 
 import * as actions from "actions"
 
@@ -26,7 +26,7 @@ import '@material/icon-button/dist/mdc.icon-button.css';
 
 const App = props => {
 
-  const { serializedState } = props
+  const { serializedState, classrooms, selectClassroom, selectSpinner } = props
 
   const [open, setOpen] = useState(false)
   const [importOpen, setImportOpen] = React.useState(false)
@@ -109,28 +109,7 @@ const App = props => {
       <TopAppBarFixedAdjust />
       <Switch>
         <Route exact path = "/">
-          <div className="welcome-container">
-            <div>Welcome to the classroom spinner!</div>
-            <div className="spinner">
-              <Spinner
-                spinner={ { scheme : "Set1" } }
-                classroom= {{
-                  roster : ["","","","","","","","","","","","","","","","","",""],
-                  spinners : {}
-                }}
-                canSpin={false}
-                outerRadius={100}
-              />
-            </div>
-            <div>
-              <Button label="Spin the wheel!" raised
-                onClick={ () => {
-                  setOpen(false)
-                  history.push("/classroom")
-                }
-              }/>
-            </div>
-          </div>
+          <ClassroomGrid classrooms={classrooms} selectClassroom={selectClassroom} selectSpinner={selectSpinner} />
         </Route>
         <Route path = "/classroom">
           <Classroom />

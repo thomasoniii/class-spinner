@@ -1,11 +1,33 @@
 .classroom-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
   margin-top : 10px;
 }
-.classroom-container > .classroom-selector { grid-area: 1 / 1 / 2 / 2; }
-.classroom-container > .spinner-selector { grid-area: 1 / 2 / 2 / 3; }
-.classroom-container > .spinner { grid-area: 2 / 1 / 11 / 3; }
+
+.XXXactive-spinner-card, .XXXactive-spinner-card-content {
+  width : 80vmin;
+  height : 80vmin;
+}
+
+.active-spinner-card-content {
+  border : 1px solid gray;
+  padding : 5px;
+  width : 100%
+}
+
+.spinner-dialog.mdc-dialog .mdc-dialog__container {
+  width : 90vmin;
+}
+
+.spinner-dialog.mdc-dialog .mdc-dialog__surface {
+  width : 90vmin;
+  max-width : none;
+}
+
+.active-spinner-card-content .spinner-container {
+  //height : 900px;
+}
+
+.mdc-dialog .mdc-dialog__container .mdc-dialog__surface .spinner-dialog-title.mdc-dialog__title {
+  margin : auto;
+  font-weight : bold;
+  font-size : 250%;
+}

@@ -2,6 +2,8 @@ import React, {useState} from "react"
 import colorbrewer from "colorbrewer"
 import {Fab} from "@rmwc/fab"
 
+import { invertColor } from "utils"
+
 import "styles/spinner.css"
 
 const availableSchemes = Object.entries(colorbrewer).reduce( (available, [key, set]) => {
@@ -23,6 +25,7 @@ const pickWinner = ( kids, classroom, spinner, setRoster, setStudentStatus, setW
 
   const winnerIndex = Math.floor(Math.random() * winnableKids.length)
   const winner = winnableKids[winnerIndex]
+
   const kidIndex = kids.findIndex(kid => kid === winner)
   setWinner(winner.name)
 
@@ -41,9 +44,13 @@ const heightForAngle = (angle, outerRadius) => {
   return outerRadius * Math.tan(radians)
 }
 
+const renderKidName = (kid) => {
+  return `${kid.name}${kid.status === "Suspended" ? "." : ""}`
+}
+
 export default props => {
 
-  const { classroom, spinner, setRoster, setStudentStatus } = props
+  const { classroom, spinner, setRoster, setStudentStatus = () => {} } = props
 
   const [spin, setSpin] = useState(false);
   const [winner, setWinner] = useState("nobody-at-all")
@@ -62,12 +69,9 @@ export default props => {
     return row
   })
 
-  const { outerRadius = 400, innerRadius = 20, margin = 20 } = props
-
-  const textOffset = outerRadius - innerRadius - 10
+  const { innerRadius = 20 } = props
 
   const colors = availableSchemes[spinner.scheme || "Set1"]
-  const pointerPadding = 20
 
   // take the number of kids and divide by 360. That's what'll cover a kid.
   // half of that will be the +/0 angle
@@ -76,32 +80,53 @@ export default props => {
   return (
     <div className="spinner-container">
       <svg
-        style={{width : "70vmin", height : "70vmin"}}
-        viewBox={`0 0 ${outerRadius * 2 + margin + pointerPadding} ${outerRadius * 2 + margin}`}>
-        <g className={`spinner ${ spin ? "spinning" : ""}`} style={{transformOrigin : `${outerRadius + margin / 2}px ${outerRadius + margin / 2}px`}}>
+        viewBox={`0 0 550 500`}
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
           <clipPath id = "circle">
-            <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} fill = 'blue'/>
+            <circle cx = "250" cy = "250" r = "245" />
           </clipPath>
-          <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} fill = 'blue'/>
+        </defs>
+        <g className={`spinner ${ spin ? "spinning" : ""}`} style={{transformOrigin : `250px 250px`}}>
+
+          <circle cx="250" cy="250" r="245" fill = 'blue'/>
           { kids.map((kid, i, kids) => {
             const angle = i / kids.length * 360
             return (
               <g clipPath="url(#circle)" key={kid.name + i}>
-                <g transform={`translate(${outerRadius + innerRadius + textOffset + margin / 2}, ${outerRadius + margin / 2}) rotate(${angle}, -${innerRadius + textOffset}, 0)`}>
-                  <path className="wedge" d={`M${-innerRadius - textOffset},0 l${outerRadius}, ${heightForAngle(wedgeAngle, outerRadius)} l0, ${-2 * heightForAngle(wedgeAngle, outerRadius)} Z`}
+                <g transform={`rotate(${angle}, 250, 250)`}>
+                  <path className="wedge" d={`M250,250 l250,${heightForAngle(wedgeAngle, 250)} l0,${-2 * heightForAngle(wedgeAngle, 250)} Z`}
                     fill={ kid.status !== "Picked" || kid.name === winner ? colors[kid.color % colors.length] : "#444444"}
                     stroke={ kid.name === winner ? "gold" : "black"}
-                    strokeWidth={ kid.name === winner ? "10" : "2"} />
+                    strokeWidth={ kid.name === winner ? "10" : "2"}
+                    onClick= {
+                      () => {
+                        if (kid.name === winner) {
+                          setWinner("nobody-at-all")
+                          setStudentStatus(classroom.id, spinner.id, kid.name, "Available")
+                        }
+                        else {
+                          setStudentStatus(classroom.id, spinner.id, kid.name, kid.status === "Suspended" ? "Available" : "Suspended")
+                        }
+                      }
+                    }/>
 
-                  <text textAnchor="end" alignmentBaseline="middle" fill={kid.status !== "Picked" || kid.name === winner  ? "black" : "#666666"}>{kid.name}</text>
+                  <text
+                    x = "475"
+                    y = "250"
+                    textAnchor="end"
+                    alignmentBaseline="middle"
+                    fill={kid.status !== "Picked" || kid.name === winner  ? "#FFFFFF" : "#666666"}
+                    stroke={kid.status !== "Picked" || kid.name === winner  ? "#333333" : "#000000"}
+                    strokeWidth={1}>{renderKidName(kid)}</text>
                 </g>
               </g>
             )
           })}
-          <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={innerRadius} fill = 'black'/>
-          <circle cx={outerRadius + margin / 2} cy={outerRadius + margin / 2} r={outerRadius} stroke = 'black' fill="none" strokeWidth="4"/>
+          <circle cx="250" cy="250" r={innerRadius} fill = 'black'/>
+          <circle cx="250" cy="250" r="245" stroke = 'black' fill="none" strokeWidth="4"/>
         </g>
-        { props.canSpin && <path d={`M${outerRadius * 2 + margin + pointerPadding - 2},${outerRadius + margin / 2} l0,-10 l-40,10 l40,10 Z`} className="spinner-pointer" /> }
+        { props.canSpin && <path d="M480,250 L548,240 L548,260 Z" className="spinner-pointer" /> }
       </svg>
       { props.canSpin && <div>
         <Fab
@@ -113,8 +138,8 @@ export default props => {
               //const newKids = [...kids]
               //const lastKid = newKids.shift();
               //newKids.push(lastKid)
-              setTimeout( () => pickWinner([...kids], classroom, spinner, setRoster, setStudentStatus, setWinner), 2000)
-              setTimeout( () => setSpin(false), 4000)
+              setTimeout( () => pickWinner([...kids], classroom, spinner, setRoster, setStudentStatus, setWinner), 1000)
+              setTimeout( () => setSpin(false), 1500)
             }
           }} />
       </div> }

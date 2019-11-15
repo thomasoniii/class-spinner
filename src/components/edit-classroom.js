@@ -18,7 +18,6 @@ import '@material/icon-button/dist/mdc.icon-button.css';
 
 const EditClassroom = (props) => {
   const {
-    classroom,
     renameClassroom,
     setRoster,
     classrooms,

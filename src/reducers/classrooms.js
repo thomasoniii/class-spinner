@@ -80,11 +80,11 @@ export default (state = INITIAL, action) => {
         }
       }
 
-      const anyoneAvailable = Object.values(newState[id].spinners[spinnerId]).some(status => status === "Available")
+      const anyoneAvailable = Object.entries(newState[id].spinners[spinnerId]).some(([kid, status]) => status === "Available" && newState[id].roster.includes(kid))
         || Object.values(newState[id].spinners[spinnerId]).length !== newState[id].roster.length
       if (!anyoneAvailable) {
         const oldStatuses = newState[id].spinners[spinnerId]
-        newState[id].spinners[spinnerId] = Object.keys(oldStatuses).reduce( (newStatuses, studentName) => {
+        newState[id].spinners[spinnerId] = newState[id].roster.reduce( (newStatuses, studentName) => {
           newStatuses[studentName] = oldStatuses[studentName] === "Picked"
             ? "Available"
             : oldStatuses[studentName]
