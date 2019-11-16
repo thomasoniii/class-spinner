@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/class-spinner/static/css/main.b8d44b82.chunk.css",
+    "main.css": "/class-spinner/static/css/main.f022a585.chunk.css",
     "main.js": "/class-spinner/static/js/main.893df559.chunk.js",
     "main.js.map": "/class-spinner/static/js/main.893df559.chunk.js.map",
     "runtime-main.js": "/class-spinner/static/js/runtime-main.b94ddd84.js",
@@ -9,10 +9,10 @@
     "static/js/2.4919d75c.chunk.js": "/class-spinner/static/js/2.4919d75c.chunk.js",
     "static/js/2.4919d75c.chunk.js.map": "/class-spinner/static/js/2.4919d75c.chunk.js.map",
     "index.html": "/class-spinner/index.html",
-    "precache-manifest.6d4e8b506ae37fef4a1b266257ba9114.js": "/class-spinner/precache-manifest.6d4e8b506ae37fef4a1b266257ba9114.js",
+    "precache-manifest.95ae85934d77040a064fa97c5d81faad.js": "/class-spinner/precache-manifest.95ae85934d77040a064fa97c5d81faad.js",
     "service-worker.js": "/class-spinner/service-worker.js",
     "static/css/2.e92dce56.chunk.css.map": "/class-spinner/static/css/2.e92dce56.chunk.css.map",
-    "static/css/main.b8d44b82.chunk.css.map": "/class-spinner/static/css/main.b8d44b82.chunk.css.map",
+    "static/css/main.f022a585.chunk.css.map": "/class-spinner/static/css/main.f022a585.chunk.css.map",
     "static/media/material-icons.css": "/class-spinner/static/media/MaterialIcons-Regular.d120c85b.ttf"
   }
 }
