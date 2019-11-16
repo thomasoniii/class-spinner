@@ -13,7 +13,7 @@ const availableSchemes = Object.entries(colorbrewer).reduce( (available, [key, s
   return available
 }, {} )
 
-const pickWinner = ( kids, classroom, spinner, setRoster, setStudentStatus, setWinner ) => {
+const pickWinner = ( kids, classroom, spinner, setRoster, setStudentStatus, setWinner, resetSpinner ) => {
 
   const lastWinner = kids.find(kid => kid.winner)
   if (lastWinner) {
@@ -22,6 +22,11 @@ const pickWinner = ( kids, classroom, spinner, setRoster, setStudentStatus, setW
   }
 
   const winnableKids = kids.filter( kid => kid.status === "Available" )
+
+  if (winnableKids.length === 0) {
+    resetSpinner(classroom.id, spinner.id, false)
+    return
+  }
 
   const winnerIndex = Math.floor(Math.random() * winnableKids.length)
   const winner = winnableKids[winnerIndex]
@@ -158,7 +163,7 @@ export default props => {
               //const newKids = [...kids]
               //const lastKid = newKids.shift();
               //newKids.push(lastKid)
-              setTimeout( () => pickWinner([...kids], classroom, spinner, setRoster, setStudentStatus, setWinner), 1000)
+              setTimeout( () => pickWinner([...kids], classroom, spinner, setRoster, setStudentStatus, setWinner, resetSpinner), 1000)
               setTimeout( () => setSpin(false), 1500)
             }
           }} />

@@ -50,9 +50,9 @@ export const setStudentStatus = (id, spinnerId, studentName, status) => {
   }
 }
 
-export const resetSpinner = (id, spinnerId) => {
+export const resetSpinner = (id, spinnerId, resetSuspensions = true) => {
   return {
     type : RESET_SPINNER,
-    payload : { id, spinnerId }
+    payload : { id, spinnerId, resetSuspensions }
   }
 }

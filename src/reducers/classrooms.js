@@ -115,7 +115,9 @@ export default (state = INITIAL, action) => {
       }, {})
     }
     case RESET_SPINNER : {
-      const { id, spinnerId } = action.payload
+      const { id, spinnerId, resetSuspensions } = action.payload
+
+      const oldStatuses = state[id].spinners[spinnerId]
 
       const newState = {
         ...state,
@@ -124,7 +126,9 @@ export default (state = INITIAL, action) => {
           spinners : {
             ...state[id].spinners,
             [spinnerId] : state[id].roster.reduce( (newSpinners, studentName) => {
-              newSpinners[studentName] = "Available"
+              newSpinners[studentName] = resetSuspensions
+                ? "Available"
+                : oldStatuses[studentName] || "Available"
               return newSpinners
             }, {})
           }
