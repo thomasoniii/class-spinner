@@ -2,11 +2,6 @@
   margin-top : 10px;
 }
 
-.XXXactive-spinner-card, .XXXactive-spinner-card-content {
-  width : 80vmin;
-  height : 80vmin;
-}
-
 .active-spinner-card-content {
   border : 1px solid gray;
   padding : 5px;
